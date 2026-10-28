@@ -8,7 +8,21 @@
       content="How the internet works — for vibe coders and builders. Plain English, spicy metaphors."
     />
     <title>How the Internet Works</title>
+    <script>
+      (function () {
+        var k = "how-internet-works:theme";
+        var s = localStorage.getItem(k);
+        var t =
+          s === "light" || s === "dark"
+            ? s
+            : window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
     <link
+      id="docsify-theme"
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
     />
@@ -41,11 +55,23 @@
         },
       };
     </script>
+    <script src="assets/theme.js"></script>
     <script src="assets/read-aloud.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script>
+      (function () {
+        var k = "how-internet-works:theme";
+        var t = document.documentElement.getAttribute("data-theme") || "dark";
+        var link = document.getElementById("docsify-theme");
+        if (link && t === "light") {
+          link.href =
+            "https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css";
+        }
+      })();
+    </script>
   </body>
 </html>
