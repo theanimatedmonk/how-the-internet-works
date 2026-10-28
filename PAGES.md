@@ -1,25 +1,34 @@
 # Reading online (GitHub Pages)
 
-The repo includes a small [Docsify](https://docsify.js.org/) shell (`index.html`) that renders the same markdown files in your browser.
+The repo includes a [Docsify](https://docsify.js.org/) shell (`index.html`) that renders the markdown chapters in your browser — sidebar, search, prev/next.
 
-**Live URL (after Pages is enabled):**  
+**Live URL:**  
 [https://theanimatedmonk.github.io/how-the-internet-works/](https://theanimatedmonk.github.io/how-the-internet-works/)
 
-## One-time setup
+## One-time setup (about 30 seconds)
 
-If the site 404s, turn on Pages:
+GitHub does not turn Pages on automatically. Do this once:
 
-1. Open [repo Settings → Pages](https://github.com/theanimatedmonk/how-the-internet-works/settings/pages).
-2. Under **Build and deployment**, set **Source** to **GitHub Actions** (not “Deploy from a branch”).
-3. Re-run the [Deploy to GitHub Pages](https://github.com/theanimatedmonk/how-the-internet-works/actions/workflows/pages.yml) workflow if needed, or push any commit to `main`.
+1. Open **[Settings → Pages](https://github.com/theanimatedmonk/how-the-internet-works/settings/pages)** for the repo.
+2. Under **Build and deployment** → **Source**, choose **Deploy from a branch**.
+3. **Branch:** `main` · **Folder:** `/ (root)` · Save.
+4. Wait 1–2 minutes. Refresh the live URL above.
 
-The workflow uploads the repo root (markdown + `index.html`) on every push to `main`.
+You should see a green deployment note on the Pages settings screen when it’s ready.
+
+## What gets published
+
+Everything at the repo root: `index.html`, `_sidebar.md`, `assets/`, and all `*.md` chapter files. `.nojekyll` tells GitHub not to run Jekyll so Docsify can load raw markdown.
 
 ## Local preview
 
 ```bash
+cd "/Users/sajal.k/Documents/Code files/how-internet-works"
 npx serve .
-# open http://localhost:3000
 ```
 
-On localhost, Docsify uses `/` as the base path; on GitHub Pages it uses `/how-the-internet-works/`.
+Open `http://localhost:3000` — Docsify detects localhost and uses `/` as the base path. On GitHub Pages it uses `/how-the-internet-works/`.
+
+## Optional: GitHub Actions deploy
+
+If you prefer **Source: GitHub Actions** later, add a Pages workflow and re-run deploy from the Actions tab. Branch deploy above is enough for this site.
