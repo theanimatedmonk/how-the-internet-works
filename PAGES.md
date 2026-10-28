@@ -29,6 +29,10 @@ npx serve .
 
 Open `http://localhost:3000` — Docsify detects localhost and uses `/` as the base path. On GitHub Pages it uses `/how-the-internet-works/`.
 
+## Read aloud
+
+**Listen** panel (bottom-right): voice picker, read / pause / stop, speed. Uses your browser’s speech voices (★ = recommended).
+
 ## Optional: GitHub Actions deploy
 
 If you prefer **Source: GitHub Actions** later, add a Pages workflow and re-run deploy from the Actions tab. Branch deploy above is enough for this site.

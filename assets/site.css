@@ -1,24 +1,78 @@
 :root {
   --base-font-size: 16px;
-  --theme-color: #f97316;
+  --theme-color: #d4d4d4;
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-border: #2a2a2a;
+  --color-border-strong: #404040;
+  --color-text: #fafafa;
+  --color-muted: #a3a3a3;
+  --color-subtle: #737373;
   --content-max-width: 52rem;
   --sidebar-width: 17rem;
+  --radius: 10px;
+  --radius-sm: 8px;
 }
 
-.app-name-link img {
-  display: none;
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 .sidebar {
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.sidebar-nav li a {
+  color: var(--color-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.55rem;
+  margin: 0.1rem 0.35rem 0.1rem 0;
+  display: block;
+  border: 1px solid transparent;
+}
+
+.sidebar-nav li.active > a,
+.sidebar-nav li a:hover {
+  color: var(--color-text);
+  border-bottom: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
 .sidebar-nav > ul > li > a {
   font-weight: 600;
 }
 
+.search input {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius);
+}
+
+.markdown-section a {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-subtle);
+  text-underline-offset: 2px;
+}
+
+.markdown-section a:hover {
+  text-decoration-color: var(--color-text);
+}
+
 .markdown-section {
   line-height: 1.65;
+  color: var(--color-muted);
+}
+
+.markdown-section h1,
+.markdown-section h2,
+.markdown-section h3,
+.markdown-section h4 {
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 .markdown-section h1 {
@@ -30,15 +84,230 @@
   display: table;
   width: 100%;
   font-size: 0.92rem;
+  border-collapse: collapse;
+}
+
+.markdown-section table th,
+.markdown-section table td {
+  border: 1px solid var(--color-border);
 }
 
 .markdown-section blockquote {
-  border-left: 3px solid var(--theme-color);
-  opacity: 0.95;
+  border-left: 2px solid var(--color-border-strong);
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+.app-name {
+  color: var(--color-text) !important;
+}
+
+/* Prev/next chapter + any docsify controls */
+.docsify-pagination-container a,
+.pagination-item a,
+button,
+input[type="search"],
+input[type="text"] {
+  border-radius: var(--radius-sm);
+}
+
+.docsify-pagination-container a {
+  border: 1px solid var(--color-border) !important;
+  background: var(--color-surface) !important;
+  color: var(--color-muted) !important;
+  padding: 0.4rem 0.75rem !important;
+}
+
+.docsify-pagination-container a:hover {
+  border-color: var(--color-border-strong) !important;
+  color: var(--color-text) !important;
+}
+
+.markdown-section ul li,
+.markdown-section ol li {
+  margin-bottom: 0.35rem;
 }
 
 @media (max-width: 768px) {
   :root {
     --sidebar-width: 14rem;
+  }
+
+  .read-aloud {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
+
+/* Read aloud */
+.read-aloud {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 999;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+
+.read-aloud__fab {
+  cursor: pointer;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 500;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  padding: 0.5rem 0.85rem;
+  box-shadow: none;
+}
+
+.read-aloud__fab:hover {
+  background: #1a1a1a;
+  border-color: var(--color-muted);
+}
+
+.read-aloud__fab[hidden] {
+  display: none !important;
+}
+
+.read-aloud__panel {
+  width: min(20rem, calc(100vw - 1.5rem));
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  box-shadow: none;
+}
+
+.read-aloud__panel[hidden] {
+  display: none !important;
+}
+
+.read-aloud__close {
+  flex: 0 0 auto;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--color-subtle);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.2rem 0.45rem;
+  margin-left: 0.25rem;
+  border-radius: var(--radius-sm);
+}
+
+.read-aloud__close:hover {
+  color: var(--color-text);
+}
+
+.read-aloud__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.read-aloud__title {
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.read-aloud__status {
+  color: var(--color-subtle);
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.7rem;
+}
+
+.read-aloud__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.read-aloud__btn {
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.55rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+}
+
+.read-aloud__btn:hover:not(:disabled) {
+  border-color: var(--color-border-strong);
+  background: #1a1a1a;
+}
+
+.read-aloud__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  color: var(--color-subtle);
+}
+
+.read-aloud__rate {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: var(--color-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.read-aloud__rate input[type="range"] {
+  width: 4.5rem;
+  accent-color: var(--color-muted);
+}
+
+.read-aloud__voice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  margin-bottom: 0.45rem;
+  font-size: 0.65rem;
+  color: var(--color-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.read-aloud__voice select {
+  width: 100%;
+  padding: 0.35rem 0.45rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.72rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.read-aloud__btn--compact {
+  flex: 0 0 auto;
+  padding: 0.35rem 0.5rem;
+}
+
+@media (max-width: 768px) {
+  main {
+    padding-bottom: 4.5rem;
   }
 }
