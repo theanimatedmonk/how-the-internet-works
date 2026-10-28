@@ -1,84 +1,147 @@
 # 09 — Who Sells What: AWS Scale vs Indie-Friendly
 
-## The kingdoms (not exhaustive, but honest)
-
-### Hyperscaler: **AWS** (Amazon Web Services)
-
-**Supreme court of cloud** for enterprises. Regions worldwide, every service ever named with an acronym.
-
-| You want… | AWS thing |
-|-----------|-----------|
-| Virtual machines | EC2 |
-| Serverless functions | Lambda |
-| Object storage | **S3** |
-| Managed Postgres | RDS |
-| CDN | CloudFront |
-| Load balancing | ALB/ELB |
-| Kubernetes if you're feeling dangerous | EKS |
-
-**When:** compliance, huge scale, hired DevOps, multi-region, "we need a service for everything."
-
-**Vibe:** powerful, verbose, bill surprise potential. Not where most designers prototype.
-
-**Peers:** Google Cloud (GCP), Microsoft Azure — same weight class.
+Picking infra is like picking a neighborhood: **school district (compliance), commute (latency), rent (baseline cost), and whether you need a doorman (support).**
 
 ---
 
-### Indie / builder-friendly (lower ceremony)
+## The three tiers (mental model)
 
-| Need | Players |
-|------|---------|
-| FE + serverless API | **Vercel**, Netlify |
-| Mobile + auth + realtime DB | **Firebase** |
-| Postgres + auth + storage DX | **Supabase** |
-| Persistent API + worker + cron | **Render**, **Railway**, Fly.io |
-| Cheap VPS you SSH into | DigitalOcean Droplet, Hetzner |
-| S3-compatible cheap storage | Cloudflare **R2**, DO Spaces |
-| Serverless Redis | Upstash |
-| Email | Resend, Postmark |
-| Payments | Stripe |
-
-**When:** shipping MVP, side project, small team, predictable DX over infinite knobs.
-
----
-
-### Decision cheat sheet (no guilt)
-
-| Situation | Lean toward |
-|-----------|-------------|
-| Next.js marketing + light API | Vercel |
-| Need SQL + auth fast | Supabase |
-| WebSockets + background jobs | Railway / Render |
-| Already on Firebase mobile | Firebase stack |
-| Enterprise IT mandates cloud | AWS/GCP/Azure |
-| "We outgrew Heroku" memes | Railway/Render or proper AWS migration |
-
-**Migration path** that happens in real life: Supabase + Vercel → add worker on Railway → eventually hire person who speaks IAM.
+```mermaid
+flowchart TB
+  subgraph hyperscaler [Hyperscaler]
+    AWS[AWS / GCP / Azure]
+  end
+  subgraph managed [Managed / builder platforms]
+    V[Vercel / Netlify]
+    S[Supabase / Firebase]
+    R[Render / Railway / Fly]
+  end
+  subgraph diy [DIY VPS]
+    H[Hetzner / DO Droplet]
+  end
+  you[You shipping v1] --> managed
+  enterprise[Enterprise / compliance] --> hyperscaler
+  tinkerer[You love SSH] --> diy
+```
 
 ---
 
-### Regions (why "where is it hosted?" matters)
+## Hyperscaler: **AWS** (and GCP, Azure)
 
-Data lives in a **region** (e.g. `ap-south-1` Mumbai). Closer region = lower latency for users there. **GDPR/data residency** sometimes forces EU-only.
+**AWS** = everything bagel. You can run a lemonade stand and a airline on the same account (please don't use one account for both).
 
-AWS has the most region sprawl; indie hosts pick 1–3 regions for you.
+| You want… | AWS thing | Notes |
+|-----------|-----------|--------|
+| Virtual machines | **EC2** | Raw Linux boxes — you patch, you cry |
+| Serverless functions | **Lambda** | Event-driven, cold starts, IAM fun |
+| Object storage | **S3** | Industry default for files |
+| Managed Postgres | **RDS** | Backups, failover options |
+| CDN | **CloudFront** | Pairs with S3 |
+| Load balancing | **ALB** | Routes traffic across instances |
+| Queues | **SQS** | Decouple webhook bursts |
+| Secrets | **Secrets Manager** | Not `.env` in git |
+| Container orchestration | **ECS / EKS** | Kubernetes when you hire adults |
+
+**When AWS wins:** regulated industries, multi-region SLAs, existing AWS enterprise agreement, need obscure services (Kinesis, SageMaker at scale), dedicated infra team.
+
+**When AWS hurts:** solo builder paying for NAT Gateway memes, learning IAM instead of shipping, invoice shock at 3am.
+
+**GCP** — strong data/ML, Firebase family, BigQuery cult. **Azure** — Microsoft shops, .NET gravity.
 
 ---
 
-### Cost philosophy
+## Indie / builder-friendly (lower ceremony)
 
-- **Serverless:** cheap at zero users, scales with success (and spikes).
-- **Persistent:** baseline monthly even at zero.
-- **AWS:** pay for what you use + complexity tax (NAT gateways, the eternal meme).
+These **hide** VPCs and patch Tuesday. You get dashboards and env var text boxes.
+
+### Frontend & edge
+
+| Player | Sweet spot | Watch out for |
+|--------|------------|---------------|
+| **Vercel** | Next.js, preview URLs per PR, serverless API routes | Vendor cozy with Next; heavy backend elsewhere |
+| **Netlify** | Static sites, forms, functions | Same family as Vercel |
+| **Cloudflare Pages** | Static + Workers at edge | Different pricing vibe |
+
+### Backend + database bundles
+
+| Player | Sweet spot | Watch out for |
+|--------|------------|---------------|
+| **Supabase** | Postgres + auth + storage + realtime | You still think in SQL |
+| **Firebase** | Mobile-first, auth, Firestore, push | Document model, Google rules |
+| **Neon / PlanetScale** | Managed SQL without full BaaS | Bring your own API |
+
+### Always-on apps (API, workers, cron)
+
+| Player | Sweet spot | Watch out for |
+|--------|------------|---------------|
+| **Render** | Web service + worker + cron, simple mental model | Cold free tier spin-down |
+| **Railway** | Containers + DB plugins, fast DX | Usage-based bill |
+| **Fly.io** | Run close to users globally | More knobs than Render |
+
+### Storage, cache, email, money
+
+| Need | Indie picks |
+|------|-------------|
+| Cheap S3-like storage | **Cloudflare R2**, DO Spaces |
+| Redis without babysitting | **Upstash** |
+| Transactional email | **Resend**, Postmark, SendGrid |
+| Payments | **Stripe** (test vs live keys per env — [chapter 13](./13-environments-secrets.md)) |
+| Auth (don't roll crypto) | Clerk, Auth0, Supabase Auth, Firebase Auth |
+| Error tracking | Sentry |
+| Logs / uptime | Better Stack, Datadog (when you grow up) |
+
+### Domains & DNS
+
+**Cloudflare**, Namecheap, Google Domains successors — buy domain, point **DNS** A/CNAME records at Vercel or Railway. "Why isn't my deploy live?" is DNS 40% of the time.
+
+---
+
+## Decision cheat sheet (expanded)
+
+| Situation | Lean toward | Why |
+|-----------|-------------|-----|
+| Marketing site + blog | Vercel / Netlify / Pages | Zero server babysitting |
+| SaaS MVP with users + SQL | Supabase + Vercel or Railway API | Auth and DB day one |
+| WebSockets + job queue | Railway / Render persistent service | Serverless isn't home |
+| Mobile app + push + offline | Firebase | Integrated mobile story |
+| Client mandates "cloud" | AWS/GCP with consultant | Politics + compliance |
+| EU data residency | EU region on any host + legal review | Not just checkbox |
+| Predictable $20/mo side project | Render free/cheap, Supabase free tier | Until success punishes you |
+
+**Real migration arc:** Supabase + Vercel → background worker on Railway → Redis (Upstash) → "we should talk about AWS" when revenue and pain justify headcount.
+
+---
+
+## Regions & latency
+
+Data lives in a **region** (`ap-south-1` Mumbai, `eu-west-1` Ireland). Users far from region feel lag on **dynamic** API calls; **CDN** fixes static assets, not uncached SQL.
+
+Pick region close to **users** or **legal requirement** — not where you vacation.
+
+---
+
+## Cost philosophy (honest)
+
+| Model | You pay when… | Feels like |
+|-------|----------------|------------|
+| Serverless / usage | Traffic spikes | Catering bill |
+| Persistent always-on | Calendar month | Chef salary |
+| AWS microservices | Traffic + misconfig | Leased building + hidden fees |
+
+**Free tiers** are marketing. Plan for **first paying customer** pricing, not forever-free.
+
+---
+
+## Observability (when things break at 2am)
+
+Someone needs to see **logs, errors, traces**. Indie: Sentry + host logs. AWS: CloudWatch + X-Ray + $$$. You don't need this on day one — you need it before **first big launch**.
 
 ---
 
 ## Builder takeaway
 
-You don't need AWS on day one unless the client already lives there. **Match tool to conversation:**
+- **Prototype:** managed platforms (Vercel + Supabase/Railway).
+- **Scale / compliance:** hyperscaler + team.
+- **Never choose AWS because it sounds serious** — choose it when requirements are serious.
 
-- Designer prototype → Supabase/Vercel
-- Realtime product → check persistent + DB choice
-- Fortune 500 RFP → hyperscaler + consultants
-
-Next: [10-microservices-docker-cicd.md](./10-microservices-docker-cicd.md) — buzzwords defanged.
+Next: [10-microservices-docker-cicd.md](./10-microservices-docker-cicd.md) — shipping code, not just hosting it.

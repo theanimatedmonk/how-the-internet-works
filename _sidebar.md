@@ -11,3 +11,6 @@
   - [09 — Pick your stack](/09-pick-your-stack-players.md)
   - [10 — Microservices, Docker, CI/CD](/10-microservices-docker-cicd.md)
   - [11 — Integrations](/11-integrations.md)
+  - [12 — Git & GitHub](/12-git-github-workflow.md)
+  - [13 — Environments & secrets](/13-environments-secrets.md)
+  - [14 — Security basics](/14-security-basics.md)

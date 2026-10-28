@@ -23,6 +23,9 @@ You already know the frontend — pixels, components, Figma handoff. This module
 | 9 | [09-pick-your-stack-players.md](./09-pick-your-stack-players.md) | AWS at scale vs indie-friendly hosts — when to pick what |
 | 10 | [10-microservices-docker-cicd.md](./10-microservices-docker-cicd.md) | Microservices without the LinkedIn post, Docker, CI/CD basics |
 | 11 | [11-integrations.md](./11-integrations.md) | Webhooks, OAuth, MCP — how apps shake hands |
+| 12 | [12-git-github-workflow.md](./12-git-github-workflow.md) | Branches, PRs, merge vs rebase vs squash, worktrees |
+| 13 | [13-environments-secrets.md](./13-environments-secrets.md) | Staging, QA, preprod, prod, env vars — secrets never in git |
+| 14 | [14-security-basics.md](./14-security-basics.md) | SSH, HTTPS, MFA, authz, injection 101, practical checklist |
 
 ---
 
@@ -33,6 +36,7 @@ You already know the frontend — pixels, components, Figma handoff. This module
 - **SQL DB:** Excel on steroids with relationships. **Document DB:** nested JSON folders.
 - **Serverless:** caterers per order. **Persistent server:** salaried chef in your kitchen.
 - **Webhook:** "don't call us, we'll call you when the pizza's ready."
+- **SSH:** encrypted remote login — use keys, not reused passwords on the internet.
 
 Built for designers who ship — so the architecture diagram finally makes emotional sense.
 
