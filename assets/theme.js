@@ -1,5 +1,5 @@
 /**
- * Light / dark theme + GitHub — bottom-right pill buttons (icon + text).
+ * Light / dark theme + GitHub — top-right icon buttons.
  */
 (function () {
   var STORAGE_KEY = "how-internet-works:theme";
@@ -54,23 +54,13 @@
     return theme === "dark" ? ICON_SUN : ICON_MOON;
   }
 
-  function pillContent(icon, text) {
-    return (
-      '<span class="pill-btn__icon">' +
-      icon +
-      '</span><span class="pill-btn__text">' +
-      text +
-      "</span>"
-    );
-  }
-
   function applyTheme(theme, save) {
     document.documentElement.setAttribute("data-theme", theme);
     setStylesheet(theme);
     if (save !== false) localStorage.setItem(STORAGE_KEY, theme);
     var btn = document.querySelector(".theme-toggle");
     if (btn) {
-      btn.innerHTML = pillContent(themeIcon(theme), THEMES[theme].label);
+      btn.innerHTML = themeIcon(theme);
       btn.setAttribute("aria-label", THEMES[theme].title);
     }
   }
@@ -110,16 +100,16 @@
 
     var themeBtn = document.createElement("button");
     themeBtn.type = "button";
-    themeBtn.className = "pill-btn theme-toggle";
+    themeBtn.className = "icon-btn theme-toggle";
     themeBtn.addEventListener("click", toggleTheme);
 
     var githubLink = document.createElement("a");
-    githubLink.className = "pill-btn github-pill";
+    githubLink.className = "icon-btn github-pill";
     githubLink.href = GITHUB_URL;
     githubLink.target = "_blank";
     githubLink.rel = "noopener noreferrer";
     githubLink.setAttribute("aria-label", "View source on GitHub");
-    githubLink.innerHTML = pillContent(ICON_GITHUB, "GitHub");
+    githubLink.innerHTML = ICON_GITHUB;
 
     dock.appendChild(themeBtn);
     dock.appendChild(githubLink);

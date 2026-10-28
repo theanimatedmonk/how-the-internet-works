@@ -19,6 +19,21 @@
 
   var els = {};
 
+  var ICON_SPEAKER =
+    '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">' +
+    '<path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>' +
+    "</svg>";
+
+  function fabLabel(text) {
+    return (
+      '<span class="read-aloud__fab-icon">' +
+      ICON_SPEAKER +
+      '</span><span class="read-aloud__fab-text">' +
+      text +
+      "</span>"
+    );
+  }
+
   function voiceScore(v) {
     var n = (v.name + " " + v.lang + " " + (v.voiceURI || "")).toLowerCase();
     var score = 0;
@@ -182,13 +197,15 @@
 
   function updateFabHint() {
     if (!els.fab) return;
+    var textEl = els.fab.querySelector(".read-aloud__fab-text");
+    if (!textEl) return;
     if (state.playing && !state.paused) {
-      els.fab.textContent =
-        "Listen · " + (state.chunkIndex + 1) + "/" + state.chunks.length;
+      textEl.textContent =
+        (state.chunkIndex + 1) + "/" + state.chunks.length;
     } else if (state.paused) {
-      els.fab.textContent = "Listen · paused";
+      textEl.textContent = "Paused";
     } else {
-      els.fab.textContent = "Listen";
+      textEl.textContent = "Listen";
     }
   }
 
@@ -310,7 +327,7 @@
     bar.setAttribute("aria-label", "Read aloud");
     bar.innerHTML =
       '<button type="button" class="read-aloud__fab" aria-expanded="false" aria-controls="read-aloud-panel">' +
-      "Listen" +
+      fabLabel("Listen") +
       "</button>" +
       '<div id="read-aloud-panel" class="read-aloud__panel" hidden>' +
       '<div class="read-aloud__head">' +

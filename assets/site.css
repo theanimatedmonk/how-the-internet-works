@@ -137,49 +137,42 @@ body {
 
 .floating-actions {
   position: fixed;
-  bottom: 1.25rem;
+  top: 1rem;
   right: 1.25rem;
+  bottom: auto;
   z-index: 998;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
   gap: 0.5rem;
 }
 
-.pill-btn {
+.icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.45rem;
-  min-height: 2.75rem;
-  padding: 0.55rem 1.1rem;
-  border-radius: 999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 50%;
   border: 1px solid var(--color-border-strong);
   background: var(--color-surface);
   color: var(--color-text);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
   text-decoration: none !important;
   cursor: pointer;
-  box-shadow: none;
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.pill-btn:hover {
+.icon-btn:hover {
   background: var(--color-hover);
   border-color: var(--color-muted);
   color: var(--color-text);
 }
 
-.pill-btn__icon {
-  display: inline-flex;
-  line-height: 0;
-}
-
+.pill-btn,
+.pill-btn__icon,
 .pill-btn__text {
-  line-height: 1;
+  /* legacy */
 }
 
 .github-corner {
@@ -240,12 +233,12 @@ input[type="text"] {
   }
 
   .floating-actions {
+    top: 0.65rem;
     right: 0.75rem;
-    bottom: 0.75rem;
   }
 }
 
-/* Read aloud — bottom left so actions stay bottom right */
+/* Read aloud — bottom left */
 .read-aloud {
   position: fixed;
   bottom: 1.25rem;
@@ -258,22 +251,36 @@ input[type="text"] {
 
 .read-aloud__fab {
   cursor: pointer;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  color: #0a0a0a;
+  font-weight: 600;
   font-size: 0.8125rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border-radius: 999px;
   min-height: 2.75rem;
-  padding: 0.55rem 1.1rem;
+  padding: 0.55rem 1.15rem;
   box-shadow: none;
 }
 
+.read-aloud__fab-icon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.read-aloud__fab-text {
+  line-height: 1;
+}
+
 .read-aloud__fab:hover {
-  background: var(--color-hover);
-  border-color: var(--color-muted);
+  background: #f0f0f0;
+  border-color: #d4d4d4;
+  color: #0a0a0a;
 }
 
 .read-aloud__fab[hidden] {
