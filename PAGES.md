@@ -33,7 +33,7 @@ Open `http://localhost:3000` — Docsify detects localhost and uses `/` as the b
 
 **Listen** panel (bottom-right): voice picker, read / pause / stop, speed. Uses your browser’s speech voices (★ = recommended).
 
-**Theme:** use the **Light** / **Dark** button at the top of the sidebar (saved in your browser; defaults to system preference).
+**Theme:** sun / moon and GitHub icons at the top of the sidebar (saved in your browser).
 
 ## Optional: GitHub Actions deploy
 
