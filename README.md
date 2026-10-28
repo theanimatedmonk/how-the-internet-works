@@ -35,3 +35,7 @@ You already know the frontend — pixels, components, Figma handoff. This module
 - **Webhook:** "don't call us, we'll call you when the pizza's ready."
 
 Built for designers who ship — so the architecture diagram finally makes emotional sense.
+
+---
+
+**Read online:** [theanimatedmonk.github.io/how-the-internet-works](https://theanimatedmonk.github.io/how-the-internet-works/) (GitHub Pages)
