@@ -229,12 +229,128 @@ input[type="text"] {
   .read-aloud {
     left: auto;
     right: 0.75rem;
-    bottom: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    width: calc(100vw - 1.5rem);
+    max-width: 22rem;
   }
 
   .floating-actions {
-    top: 0.65rem;
+    top: max(0.65rem, env(safe-area-inset-top));
     right: 0.75rem;
+  }
+
+  /* Bigger Listen pill — primary mobile CTA */
+  .read-aloud__fab {
+    min-height: 3.5rem;
+    padding: 0.85rem 1.65rem;
+    font-size: 1rem;
+    gap: 0.55rem;
+    width: 100%;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .read-aloud__fab-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .read-aloud--open .read-aloud__panel {
+    animation: listen-pop 0.22s ease-out;
+  }
+
+  @keyframes listen-pop {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .read-aloud__panel {
+    width: 100%;
+    max-width: none;
+    padding: 1rem 1.1rem 1.15rem;
+    border-radius: 16px;
+    margin-bottom: 0.65rem;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .read-aloud__head {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .read-aloud__title {
+    font-size: 0.8rem;
+  }
+
+  .read-aloud__status {
+    font-size: 0.75rem;
+  }
+
+  .read-aloud__close {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    font-size: 1.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .read-aloud__voice {
+    font-size: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .read-aloud__voice select {
+    min-height: 3.25rem;
+    font-size: 1rem;
+    padding: 0.7rem 0.85rem;
+  }
+
+  .read-aloud__controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.55rem;
+  }
+
+  .read-aloud__btn {
+    min-height: 3.25rem;
+    padding: 0.85rem 1.1rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    width: 100%;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .read-aloud__btn--compact {
+    width: 100%;
+    min-height: 3.25rem;
+    font-size: 1.05rem;
+  }
+
+  .read-aloud__rate {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    padding-top: 0.25rem;
+  }
+
+  .read-aloud__rate input[type="range"] {
+    flex: 1;
+    min-width: 9rem;
+    height: 2.25rem;
+  }
+
+  main {
+    padding-bottom: 6.5rem;
   }
 }
 
@@ -424,7 +540,13 @@ input[type="text"] {
 }
 
 @media (max-width: 768px) {
-  main {
-    padding-bottom: 9rem;
+  .icon-btn {
+    width: 2.85rem;
+    height: 2.85rem;
+  }
+
+  .icon-btn svg {
+    width: 22px;
+    height: 22px;
   }
 }
