@@ -26,6 +26,8 @@ You already know the frontend — pixels, components, Figma handoff. This module
 | 12 | [12-git-github-workflow.md](./12-git-github-workflow.md) | Branches, PRs, merge vs rebase vs squash, worktrees |
 | 13 | [13-environments-secrets.md](./13-environments-secrets.md) | Staging, QA, preprod, prod, env vars — secrets never in git |
 | 14 | [14-security-basics.md](./14-security-basics.md) | SSH, HTTPS, MFA, authz, injection 101, practical checklist |
+| 15 | [15-utm-parameters.md](./15-utm-parameters.md) | UTM tags on URLs — attribution, five parameters, mistakes to avoid |
+| 16 | [16-mixpanel-and-product-analytics.md](./16-mixpanel-and-product-analytics.md) | Client analytics, first-party proxy, server-side events |
 
 ---
 
@@ -37,6 +39,8 @@ You already know the frontend — pixels, components, Figma handoff. This module
 - **Serverless:** caterers per order. **Persistent server:** salaried chef in your kitchen.
 - **Webhook:** "don't call us, we'll call you when the pizza's ready."
 - **SSH:** encrypted remote login — use keys, not reused passwords on the internet.
+- **UTM:** query-string labels so analytics knows which link sent the click.
+- **Analytics:** browser events → proxy on your domain → server for money.
 
 Built for designers who ship — so the architecture diagram finally makes emotional sense.
 

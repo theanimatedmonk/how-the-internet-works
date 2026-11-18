@@ -14,3 +14,5 @@
   - [12 — Git & GitHub](/12-git-github-workflow.md)
   - [13 — Environments & secrets](/13-environments-secrets.md)
   - [14 — Security basics](/14-security-basics.md)
+  - [15 — UTM parameters](/15-utm-parameters.md)
+  - [16 — Mixpanel & tracking](/16-mixpanel-and-product-analytics.md)
