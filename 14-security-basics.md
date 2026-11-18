@@ -195,25 +195,95 @@ app.get("/api/invoices/:id", async (req, res) => {
 
 ---
 
-## SQL injection — before / after
+## SQL injection — sequential attack & parameterization
 
-**Vulnerable (string concat):**
+**Root cause:** code and user data ride in the **same string**. The database can't tell your guestbook note from SQL commands — only **how** you send the query matters.
+
+### Step by step: how a careless server gets nuked
+
+**1. The server pastes visitor text into SQL** (string concat / template glue):
 
 ```javascript
-// ❌ Never
-const email = req.body.email; // attacker sends: ' OR '1'='1
-const query = `SELECT * FROM users WHERE email = '${email}'`;
-// Becomes: SELECT * FROM users WHERE email = '' OR '1'='1'  → logs in as first user
+// ❌ Kitchen writes the order on the ticket AND the recipe in one sentence
+db.query("insert into messages (message) values ('" + message + "')");
 ```
 
-**Safe (parameterized):**
+**2. A visitor types this into "leave a note":**
+
+```text
+hi'); delete from messages; --
+```
+
+**3. What the database actually receives:**
+
+```sql
+insert into messages (message) values ('hi'); delete from messages; --')
+```
+
+**4. What Postgres "sees" (sequential commands):**
+
+| Piece | What the DB thinks |
+|-------|---------------------|
+| `'` after `hi` | String closed early — you're "out" of the note text |
+| `);` | End the insert — done with command one |
+| `delete from messages;` | Brand-new command two — empty the whole table |
+| `--` | Comment out the stray `')` so nothing errors |
+
+One polite-looking note → note saved → **every note deleted**. No explosion on screen. Often **silent**.
+
+Metaphor: you asked guests to write on the **menu**. Someone wrote *"Burger. Also fire the chef. Burn the kitchen."* and the waiter read the whole line as instructions.
+
+### Login bypass (the classic)
+
+Same glue, different payload — email field:
+
+```text
+' OR '1'='1
+```
+
+```sql
+SELECT * FROM users WHERE email = '' OR '1'='1'
+```
+
+"Always true" → first user in the table → **you're in** without a password.
+
+### Where real attackers go next (still sequential)
+
+One hole is never just one hole:
+
+- **`UNION SELECT`** — stitch another table into your "results": password hashes, emails, `app_secrets` (Telegram bot tokens, API keys).
+- **Powerful DB user** — change rows, create admin accounts, sometimes run more than SELECT.
+- **Most of it is quiet** — no 500 error, no "hacked" banner. You notice when customers complain or Stripe looks weird.
+
+The characters `'` `;` `--` aren't magic — they're only dangerous because the server **interpreted your note as code**.
+
+### The fix: parameterization (never glue strings)
+
+**Rule:** user input is **data only**. SQL structure is fixed; values are **bound** in separate envelopes the DB never parses as commands.
 
 ```javascript
-// ✅ Prisma / prepared statements
+// ✅ Prepared statement / driver parameters
+await db.query(
+  "insert into messages (message) values ($1)",
+  [message] // even hi'); delete... stays ONE blob of text
+);
+```
+
+```javascript
+// ✅ ORM (Prisma, Drizzle) — same physics
 const user = await prisma.user.findUnique({
   where: { email: req.body.email },
 });
 ```
+
+```javascript
+// ❌ Still glue — "we use an ORM" but someone did this
+await db.raw(`SELECT * FROM users WHERE email = '${email}'`);
+```
+
+**How to audit (vibe-coder edition):** grep the backend for SQL next to `+`, template literals with `${req.body`, or `.raw(`. If every path uses `$1` / `?` / ORM `where: { ... }`, visitors can type Shakespeare or malware haiku — it's still **one string value**, not extra commands.
+
+**Safe site checklist:** forms → API → **parameterized** query → DB. No visitor text concatenated into SQL anywhere. That's the whole sermon.
 
 ---
 
