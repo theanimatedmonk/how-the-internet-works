@@ -22,3 +22,7 @@
   - [AI 02 — Agents & inference](/ai/02-agents-harnesses-inference.md)
   - [AI 03 — RAG & agent loops](/ai/03-rag-and-agent-loops.md)
   - [AI 04 — GPUs & data centers](/ai/04-gpus-datacenters-chips.md)
+  - [AI 05 — Diffusion vs code](/ai/05-diffusion-vs-code-world.md)
+  - [AI 06 — STT, TTS, Sarvam](/ai/06-stt-tts-and-sarvam-voice.md)
+  - [AI 07 — Fine-tune, evals, safety](/ai/07-fine-tuning-evals-safety.md)
+  - [AI 08 — India & Token Factory](/ai/08-india-inference-token-factory.md)

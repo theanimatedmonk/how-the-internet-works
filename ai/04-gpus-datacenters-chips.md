@@ -112,4 +112,6 @@ You won’t pick rack layouts. You **will** explain why “just run it locally�
 - **Hyperscalers** vertically integrate; **neoclouds** rent the slices; **everyone** negotiates NVIDIA supply.
 - Data centers are **war-adjacent critical infra** in geopolitics — not just “the cloud.”
 
+Continue: [05-diffusion-vs-code-world.md](./05-diffusion-vs-code-world.md) · [08-india-inference-token-factory.md](./08-india-inference-token-factory.md)
+
 Back to [AI index](./README.md) · [Main module](../README.md).
