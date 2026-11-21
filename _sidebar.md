@@ -26,4 +26,4 @@
   - [AI 06 — STT, TTS, Sarvam](/ai/06-stt-tts-and-sarvam-voice.md)
   - [AI 07 — Fine-tune, evals, safety](/ai/07-fine-tuning-evals-safety.md)
   - [AI 08 — India & Token Factory](/ai/08-india-inference-token-factory.md)
-  - [AI 09 — Examples cookbook](/ai/09-examples-inference-evals-harness.md)
+  - [AI 09 — Examples index](/ai/09-examples-inference-evals-harness.md)
