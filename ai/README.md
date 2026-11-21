@@ -18,6 +18,7 @@ This section is **separate** from the [main internet stack](../README.md) (chapt
 | 6 | [06-stt-tts-and-sarvam-voice.md](./06-stt-tts-and-sarvam-voice.md) | Speech in/out, Indic voice, Sarvam’s speech lane |
 | 7 | [07-fine-tuning-evals-safety.md](./07-fine-tuning-evals-safety.md) | Fine-tune, evals, safety — flagposts for depth |
 | 8 | [08-india-inference-token-factory.md](./08-india-inference-token-factory.md) | Token Factory, Sarvam, India agent stack |
+| 9 | [09-examples-inference-evals-harness.md](./09-examples-inference-evals-harness.md) | Inference, evals, guardrails, rules, hooks, skills — examples |
 
 ---
 

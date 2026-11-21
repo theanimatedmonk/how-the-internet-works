@@ -125,6 +125,8 @@ Hyperscalers (AWS Bedrock, Azure OpenAI, Vertex) and **neoclouds** (CoreWeave, N
 
 The **LLM never had your private DB in training**. Tools and RAG **inject fresh facts** per turn.
 
+**Worked examples:** [09-examples-inference-evals-harness.md](./09-examples-inference-evals-harness.md) — token bills, rules vs skills, `beforeToolCall` hooks.
+
 ---
 
 ## Builder takeaway

@@ -73,4 +73,6 @@ This file is the **table of contents for seriousness** when you’re past vibe c
 - **Evals** or you’re flying blind.  
 - **Safety** = harness + permissions + data hygiene, not “we used Claude so we’re fine.”
 
+**Examples:** [09-examples-inference-evals-harness.md](./09-examples-inference-evals-harness.md) — golden evals, guardrails, hooks.
+
 Next: [08-india-inference-token-factory.md](./08-india-inference-token-factory.md).
