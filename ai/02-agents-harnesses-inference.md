@@ -113,19 +113,129 @@ Hyperscalers (AWS Bedrock, Azure OpenAI, Vertex) and **neoclouds** (CoreWeave, N
 
 ---
 
-## Tools, MCP, skills — harness vocabulary
+## Examples: inference in practice
+
+### Claude Code — one fix, two GPU bills
+
+You: *“Fix the hydration warning in `Dashboard.tsx`.”*
+
+| Step | What happens |
+|------|----------------|
+| 1 | Harness packs repo context + rules → ~**38k input tokens** |
+| 2 | **Inference #1** on vendor GPUs → model suggests `Read` tool |
+| 3 | Tool runs **on your machine** (not inference) |
+| 4 | **Inference #2** with file contents in context → patch |
+
+```text
+Turn 1:  38k in + 400 out
+Turn 2:  41k in + 1.2k out   ← tool loops are multiple taxi rides
+```
+
+### India stack — harness local, inference remote
+
+```text
+MacBook harness  --POST /v1/chat/completions-->  Token Factory GPUs
+```
+
+Same as [AI 08](./08-india-inference-token-factory.md): only **math** is regional; **eslint** on your CPU is not “inference.”
+
+### Not inference
+
+| Action | Bill |
+|--------|------|
+| Download Llama weights once | Storage / bandwidth |
+| LoRA training Sunday night | Training GPU hours |
+| `pnpm test` after agent edits | Your laptop |
+
+---
+
+## Tools, MCP — quick vocab
 
 | Term | One line |
 |------|----------|
-| **Tool calling** | Model outputs structured JSON: “run `get_weather(city)`” |
-| **MCP** | Standard USB-C for agents ↔ your services ([chapter 11](../11-integrations.md)) |
-| **Skills / rules** | Files that steer behavior (`SKILL.md`, project rules) |
-| **Hooks** | Run before/after tool use — guardrails, formatters |
-| **Sub-agents** | Harness spawns narrower loops (researcher vs coder) |
+| **Tool calling** | Model emits JSON: `run_sql({ readOnly: true })` |
+| **MCP** | Standard plug for agents ↔ your services ([chapter 11](../11-integrations.md)) |
+| **Sub-agents** | Harness spawns a researcher loop vs a coder loop |
 
 The **LLM never had your private DB in training**. Tools and RAG **inject fresh facts** per turn.
 
-**Worked examples:** [09-examples-inference-evals-harness.md](./09-examples-inference-evals-harness.md) — token bills, rules vs skills, `beforeToolCall` hooks.
+---
+
+## Rules — always-on instructions
+
+Text injected **every turn**: `.cursor/rules/*.mdc`, `CLAUDE.md`, system prompts.
+
+```markdown
+# Example rule file
+- Package manager: pnpm only.
+- API keys: server env only, never client bundle.
+- SQL: Prisma parameterized queries only.
+```
+
+Support agent rule:
+
+```text
+Never state refund amounts unless they appear in retrieved policy chunks.
+If unsure → escalate_ticket tool.
+```
+
+Rules **suggest**; they lose to jailbreaks without **hooks** (below) and **evals** ([AI 07](./07-fine-tuning-evals-safety.md)).
+
+---
+
+## Skills — playbooks on demand
+
+Folder + `SKILL.md` loaded when the task matches (“user said migration” → load `skills/db-migration/SKILL.md`).
+
+```markdown
+## DB migration skill (excerpt)
+1. Staging only first.
+2. No DROP without explicit user YES.
+3. Run integration tests before prod summary.
+```
+
+| | **Rules** | **Skills** |
+|---|-----------|------------|
+| When | Every message | When relevant |
+| Shape | Short constraints | Multi-step runbook |
+
+---
+
+## Hooks & harness guardrails — code that always runs
+
+**Hooks** fire at lifecycle moments; many **guardrails** are implemented as hooks.
+
+| Hook | Example |
+|------|---------|
+| `beforeSubmitToModel` | Strip `.env` from attached files |
+| `beforeToolCall` | Block non–read-only SQL; require approval for `prod` bash |
+| `afterToolCall` | Redact `Bearer ` / `sk_live_` from tool stdout |
+| `onSessionStart` | Index git branch; list available skills |
+
+### Example — `beforeToolCall` (pseudocode)
+
+```javascript
+function beforeToolCall({ name, args }) {
+  if (name === "run_sql" && !args.readOnly) {
+    throw new Error("This profile is read-only SQL");
+  }
+  if (name === "bash" && args.command.includes("prod")) {
+    return { requireApproval: true };
+  }
+}
+```
+
+Hard blocks (often same layer): `rm -rf /` regex deny, max **25 tool calls**, allowlisted HTTP hosts only. Deeper **evals** for guardrails: [AI 07](./07-fine-tuning-evals-safety.md).
+
+---
+
+## Example: one agent turn (layers stacked)
+
+```text
+RULES → USER message → SKILL loaded → RAG chunks
+  → INFERENCE → HOOK (no prod SQL) → TOOL (tests locally)
+  → HOOK (redact keys) → INFERENCE again → CI evals on merge
+```
 
 ---
 
