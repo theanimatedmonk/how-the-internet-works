@@ -46,4 +46,12 @@ Built for designers who ship — so the architecture diagram finally makes emoti
 
 ---
 
+## AI module (separate track)
+
+Surface-level **LLMs, agents, RAG, GPUs & data centers** — not numbered with the 01–16 web stack.
+
+**[→ Open AI section](./ai/README.md)** (4 chapters + growing)
+
+---
+
 **Read online:** [theanimatedmonk.github.io/how-the-internet-works](https://theanimatedmonk.github.io/how-the-internet-works/) (GitHub Pages)
